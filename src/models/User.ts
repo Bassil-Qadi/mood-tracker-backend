@@ -1,7 +1,8 @@
-import mongoose, { Document, Schema } from 'mongoose';
+import mongoose, { Document, Schema, Types } from 'mongoose';
 import bcrypt from 'bcryptjs';
 
 export interface IUser extends Document {
+  _id: Types.ObjectId;
   name: string;
   email: string;
   password: string;
@@ -76,7 +77,7 @@ userSchema.methods.comparePassword = async function (
 
 // Remove password from JSON response
 userSchema.set('toJSON', {
-  transform: function (doc, ret) {
+  transform: function (_doc, ret: any) {
     delete ret.password;
     delete ret.__v;
     return ret;

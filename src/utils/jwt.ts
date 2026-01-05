@@ -9,14 +9,14 @@ export const generateAccessToken = (payload: TokenPayload): string => {
   const secret = process.env.JWT_SECRET || 'fallback-secret-key';
   const expiresIn = process.env.JWT_ACCESS_EXPIRY || '15m';
 
-  return jwt.sign(payload, secret, { expiresIn });
+  return jwt.sign(payload, secret, { expiresIn } as jwt.SignOptions);
 };
 
 export const generateRefreshToken = (payload: TokenPayload): string => {
   const secret = process.env.JWT_REFRESH_SECRET || 'fallback-refresh-secret-key';
   const expiresIn = process.env.JWT_REFRESH_EXPIRY || '7d';
 
-  return jwt.sign(payload, secret, { expiresIn });
+  return jwt.sign(payload, secret, { expiresIn } as jwt.SignOptions);
 };
 
 export const verifyAccessToken = (token: string): TokenPayload => {

@@ -235,7 +235,7 @@ export const updateProfile = async (
 export const refreshToken = async (
   req: Request,
   res: Response,
-  next: NextFunction
+  _next: NextFunction
 ): Promise<void> => {
   try {
     const { refreshToken } = req.body;
@@ -287,7 +287,7 @@ export const refreshToken = async (
 
 // Logout Controller
 export const logout = async (
-  req: Request,
+  _req: Request,
   res: Response,
   next: NextFunction
 ): Promise<void> => {
