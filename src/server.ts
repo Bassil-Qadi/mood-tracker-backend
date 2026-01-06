@@ -3,6 +3,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import connectDB from './config/database';
 import authRoutes from './routes/authRoutes';
+import userProfileRoutes from './routes/userProfileRoutes';
 import { errorHandler, notFound } from './middleware/errorHandler';
 import userModeRoutes from './routes/userModeRoutes';
 
@@ -58,6 +59,7 @@ app.get('/health', (_req, res) => {
 // API Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/user-mode', userModeRoutes);
+app.use('/api/user', userProfileRoutes);
 
 // Error handling middleware (must be last)
 app.use(notFound);

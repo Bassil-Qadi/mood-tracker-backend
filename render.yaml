@@ -1,0 +1,25 @@
+services:
+  - type: web
+    name: mood-tracker-backend
+    env: node
+    buildCommand: npm install --include=dev && npm run build
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      # Add these in Render Dashboard:
+      # - key: MONGODB_URI
+      #   value: your-mongodb-connection-string
+      # - key: JWT_SECRET
+      #   value: your-jwt-secret
+      # - key: JWT_REFRESH_SECRET
+      #   value: your-refresh-secret
+      # - key: JWT_ACCESS_EXPIRY
+      #   value: 15m
+      # - key: JWT_REFRESH_EXPIRY
+      #   value: 7d
+      # - key: FRONTEND_URL
+      #   value: your-frontend-url
+

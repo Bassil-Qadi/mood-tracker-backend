@@ -91,13 +91,17 @@ Fill in the following settings:
 
 **Build Command**: 
 ```
-npm install && npm run build
+npm install --include=dev && npm run build
 ```
+
+**⚠️ CRITICAL**: You MUST use `--include=dev` because TypeScript is in devDependencies and is required for the build. Without it, you'll get the error: "Cannot find module '/opt/render/project/src/dist/server.js'"
 
 **Start Command**: 
 ```
 npm start
 ```
+
+**Alternative**: You can use the `render.yaml` file (already created in your repo) which will auto-configure these settings.
 
 ### 4.3 Set Environment Variables
 
@@ -158,7 +162,59 @@ Once deployment is complete:
 
 ## Common Issues and Solutions
 
-### Issue 1: Build Fails - "Cannot find module"
+### ⚠️ CRITICAL FIX: "Cannot find module '/opt/render/project/src/dist/server.js'"
+
+**This is the error you're experiencing!** Here's how to fix it:
+
+**Root Cause**: Render doesn't install `devDependencies` by default, so TypeScript isn't available during the build step, causing the build to fail silently.
+
+**Solution - Update Build Command in Render Dashboard:**
+
+1. Go to your Render service dashboard
+2. Click on "Settings" tab
+3. Scroll to "Build Command"
+4. **Replace** the build command with one of these:
+
+   **Option A (Recommended):**
+   ```
+   npm install --include=dev && npm run build
+   ```
+
+   **Option B:**
+   ```
+   npm ci --include=dev && npm run build
+   ```
+
+   **Option C:**
+   ```
+   NODE_ENV=production npm install && npm run build
+   ```
+   (Note: This installs all dependencies including dev)
+
+5. Click "Save Changes"
+6. Go to "Manual Deploy" → "Deploy latest commit"
+
+**Why this works**: The `--include=dev` flag ensures TypeScript and other devDependencies are installed, allowing the build to complete successfully.
+
+**Verify the fix**: After redeploying, check the build logs. You should see:
+- `> tsc` (TypeScript compilation)
+- Files being created in `dist/` folder
+- Build completing successfully
+- Server starting with `npm start`
+
+---
+
+### Issue 1: "Cannot find module '/opt/render/project/src/dist/server.js'"
+
+**Solution**: 
+- This error means the build didn't complete successfully or TypeScript wasn't installed
+- **Fix 1**: Update your Build Command in Render to: `npm install --include=dev && npm run build`
+- **Fix 2**: Or use: `npm ci && npm run build` 
+- **Fix 3**: Make sure TypeScript is being installed (it's in devDependencies, so use `--include=dev`)
+- **Fix 4**: Check the build logs in Render - look for TypeScript compilation errors
+- **Fix 5**: Verify that `dist/server.js` exists after build (check logs)
+
+### Issue 1b: Build Fails - "Cannot find module" (other modules)
 
 **Solution**: Make sure `package.json` includes all dependencies. Run `npm install` locally to verify.
 
